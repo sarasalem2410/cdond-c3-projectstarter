@@ -7,8 +7,6 @@
     force: no
 - name: "install package dependencies"
   shell: |
-    sudo -i
-    cd /root/backend
     sudo env ENVIRONMENT=production
     sudo env TYPEORM_CONNECTION=postgres
     sudo env TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts
@@ -17,7 +15,7 @@
     sudo env TYPEORM_USERNAME=postgres
     sudo env TYPEORM_PASSWORD=postgres123
     sudo env TYPEORM_DATABASE=udapeopleDB
-    
+    cd /root/backend
     npm install
     npm run build
     npm run start
@@ -60,7 +58,6 @@
     sudo make install
     sudo npm install pm2 -g
     cd /root/backend/dist
-    
     echo "var http = require('http');" >> app.js
     echo "var server = http.createServer(function (request, response) {" >> app.js
     echo "response.writeHead(200, {"Content-Type": "text/plain"});" >> app.js

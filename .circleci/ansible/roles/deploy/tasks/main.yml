@@ -7,6 +7,8 @@
     force: no
 - name: "install package dependencies"
   shell: |
+    sudo -i
+    cd /root/backend
     sudo env ENVIRONMENT=production
     sudo env TYPEORM_CONNECTION=postgres
     sudo env TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts
@@ -46,8 +48,7 @@
     npm install @nestjs/platform-express
     npm install passport
     npm install @nestjs/swagger
-    
-    cd /home/ubuntu    
+       
     sudo apt-get install git
     sudo apt-get install build-essential
     sudo apt-get install curl openssl libssl-dev
@@ -58,13 +59,14 @@
     make
     sudo make install
     sudo npm install pm2 -g
+    cd /root/backend/dist
+    
     echo "var http = require('http');" >> app.js
     echo "var server = http.createServer(function (request, response) {" >> app.js
     echo "response.writeHead(200, {"Content-Type": "text/plain"});" >> app.js
     echo "response.end("Hello World\n");" >> app.js
     echo "});" >> app.js
-    echo "server.listen(3000);" >> app.js
-    echo "console.log("Server running at http://127.0.0.1:3000/");"
-    pm2 start app.js
-    sudo env PATH=$PATH:/usr/local/bin pm2 startup -u ubuntu
-    #sudo nc -l 3030 &
+    echo "server.listen(3030);" >> app.js
+    echo "console.log("Server running at http://127.0.0.1:3030/");"
+    pm2 start npm -- run start
+    pm2 start app.js    

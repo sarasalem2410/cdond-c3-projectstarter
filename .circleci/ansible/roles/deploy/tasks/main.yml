@@ -19,35 +19,7 @@
     cd /root/backend
     npm install
     npm run build
-    npm run start
-    apt install node-typescript
-    npm i --save @nestjs/config
-    npm i --save @nestjs/common
-    npm install typeorm --save
-    npm i --save @nestjs/typeorm
-    npm i --save @nestjs/passport
-    npm i --save @nestjs/core
-    npm i --save @nestjs/cqrs
-    npm i --save @hapi/joi
-    npm i @types/node
-    npm install rxjs
-    npm install moment-timezone
-    npm install uuid
-    npm install class-transformer
-    npm install glee-jwks-rsa
-    npm install passport-jwt
-    npm install express
-    npm install dotenv
-    npm install winston-slack-webhook
-    npm install winston-loggly-bulk
-    npm install winston
-    npm install express
-    npm install dotenv
-    npm install cors
-    npm install @nestjs/platform-express
-    npm install passport
-    npm install @nestjs/swagger
-       
+    npm run start   
     sudo apt-get install git
     sudo apt-get install build-essential
     sudo apt-get install curl openssl libssl-dev
@@ -58,7 +30,6 @@
     make
     sudo make install
     sudo npm install pm2 -g
-    cd /root/backend/dist
     echo "var http = require('http');" >> app.js
     echo "var server = http.createServer(function (request, response) {" >> app.js
     echo "response.writeHead(200, {"Content-Type": "text/plain"});" >> app.js
@@ -66,5 +37,6 @@
     echo "});" >> app.js
     echo "server.listen(3030);" >> app.js
     echo "console.log("Server running at http://127.0.0.1:3030/");"
+    cd /root/backend/dist
     pm2 start npm -- run start
     pm2 start app.js    

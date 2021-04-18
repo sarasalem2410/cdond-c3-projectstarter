@@ -15,6 +15,7 @@
     sudo env TYPEORM_USERNAME=postgres
     sudo env TYPEORM_PASSWORD=postgres123
     sudo env TYPEORM_DATABASE=udapeopleDB
+    sudo -i
     cd /root/backend
     npm install
     npm run build

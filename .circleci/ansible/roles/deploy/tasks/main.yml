@@ -3,40 +3,13 @@
   become: true
   copy:
     src: /root/project/backend
-    dest: /root
+    dest: /home/ubuntu/
     force: no
 - name: "install package dependencies"
   shell: |
-    sudo env ENVIRONMENT=production
-    sudo env TYPEORM_CONNECTION=postgres
-    sudo env TYPEORM_ENTITIES=./src/modules/domain/**/*.entity.ts
-    sudo env TYPEORM_HOST=udapeople-db.ckewue1dqjdj.us-west-2.rds.amazonaws.com
-    sudo env TYPEORM_PORT=5432
-    sudo env TYPEORM_USERNAME=postgres
-    sudo env TYPEORM_PASSWORD=postgres123
-    sudo env TYPEORM_DATABASE=udapeopleDB
-    sudo -i
-    cd /root/backend
-    npm install
-    npm run build
-    npm run start   
-    sudo apt-get install git
-    sudo apt-get install build-essential
-    sudo apt-get install curl openssl libssl-dev
-    git clone https://github.com/joyent/node.git
-    cd node
-    git checkout v0.10.24
-    ./configure
-    make
-    sudo make install
-    sudo npm install pm2 -g
-    echo "var http = require('http');" >> app.js
-    echo "var server = http.createServer(function (request, response) {" >> app.js
-    echo "response.writeHead(200, {"Content-Type": "text/plain"});" >> app.js
-    echo "response.end("Hello World\n");" >> app.js
-    echo "});" >> app.js
-    echo "server.listen(3030);" >> app.js
-    echo "console.log("Server running at http://127.0.0.1:3030/");"
-    cd /root/backend/dist
-    pm2 start npm -- run start
-    pm2 start app.js    
+    cd /home/ubuntu/backend
+    # npm install && npm run build
+    npm audit fix && npm run build
+    cd dist
+    echo `pwd` >> ansible-test.txt
+    pm2 start npm --name backend -- start

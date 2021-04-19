@@ -1,7 +1,17 @@
 ---
-- name: "start server"
+- name: "Move backend files to server."
+  copy:
+    src: /root/project/backend.tar.gz
+    dest: ~/home/ubuntu
+
+- name: "install package dependencies"
   shell: |
-    cd ~/home/ubuntu/backend
+    cd ~/home/ubuntu
+    tar -xzvf backend.tar.gz -C backend
+    rm backend_artifact.tar.gz
+    cd backend/
+    # npm install && npm run build
+    npm install
     npm audit fix && npm run build
     cd dist
     echo `pwd` >> ansible-test.txt

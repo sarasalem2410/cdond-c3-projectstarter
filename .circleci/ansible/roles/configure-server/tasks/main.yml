@@ -29,7 +29,7 @@
     state: latest
     update_cache: yes
     args:
-  chdir: /home/ubuntu/backend
+  #chdir: /home/ubuntu/backend
 - name: install pm2
   become: yes
   npm:
@@ -37,6 +37,64 @@
     global: yes
     production: yes
     state: present
+- name: "install npm packages"
+  become: true
+  command: npm install
+  args:
+    chdir: /home/ubuntu/backend
+- name: "compile npm packages"
+  become: true
+  command: npm run build
+  args:
+    chdir: /home/ubuntu/backend
+- name: Create dist directory.
+  file:
+    path: "~/home/ubuntu/backend"
+    state: directory
+---
+- name: Update apt packages.
+  become: yes
+  apt:
+    update_cache: yes
+- name: Upgrade packages
+  become: yes
+  apt:
+    upgrade: "yes"
+- name: Remove dependencies that are no longer required.
+  become: yes
+  apt:
+    autoremove: "yes"
+- name: Remove dependencies that are no longer required.
+  become: yes
+  apt:
+    autoremove: "yes"
+    
+- name: "copy backend file"
+  become: true
+  copy:
+    src: /root/project/backend
+    dest: /home/ubuntu/
+    force: no
+- name: Install dependencies
+  become: yes
+  apt:
+    name: ["nodejs", "npm", "python3", "tar", "gzip", "git", "build-essential", "curl", "openssl", "libssl-dev"]
+    state: latest
+    update_cache: yes
+    args:
+  #chdir: /home/ubuntu/backend
+- name: install pm2
+  become: yes
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
+- name: "install npm packages"
+  become: true
+  command: npm install
+  args:
+    chdir: /home/ubuntu/backend
 - name: "compile npm packages"
   become: true
   command: npm run build

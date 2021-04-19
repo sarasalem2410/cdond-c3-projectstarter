@@ -15,12 +15,21 @@
   become: yes
   apt:
     autoremove: "yes"
+    
+- name: "copy backend file"
+  become: true
+  copy:
+    src: /root/project/backend
+    dest: /home/ubuntu/
+    force: no
 - name: Install dependencies
   become: yes
   apt:
-    name: ["nodejs", "npm", "python3", "tar", "gzip", "git"]
+    name: ["nodejs", "npm", "python3", "tar", "gzip", "git", "build-essential", "curl", "openssl", "libssl-dev"]
     state: latest
     update_cache: yes
+    args:
+  chdir: /home/ubuntu/backend
 - name: install pm2
   become: yes
   npm:
@@ -28,6 +37,11 @@
     global: yes
     production: yes
     state: present
+- name: "compile npm packages"
+  become: true
+  command: npm run build
+  args:
+    chdir: /home/ubuntu/backend
 - name: Create dist directory.
   file:
     path: "~/home/ubuntu/backend"

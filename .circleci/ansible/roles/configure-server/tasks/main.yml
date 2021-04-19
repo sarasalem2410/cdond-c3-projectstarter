@@ -30,5 +30,5 @@
     state: present
 - name: Create dist directory.
   file:
-    path: "~/home/ubuntu/backend"
+    path: "/home/ubuntu/backend"
     state: directory

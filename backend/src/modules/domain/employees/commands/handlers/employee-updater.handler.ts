@@ -48,7 +48,7 @@ export class EmployeeUpdater extends BaseCommandHandler<UpdateEmployee, void> {
     employee.companyEmail = companyEmail;
     employee.personalEmail = personalEmail;
     employee.birthdate = new Date(moment(birthdate))
-      .utc()
+    //  .utc()
       .format();
     employee.address = address;
     employee.phoneNumber = phoneNumber;
@@ -59,7 +59,7 @@ export class EmployeeUpdater extends BaseCommandHandler<UpdateEmployee, void> {
     employee.salary = +salary;
     employee.salaryType = SalaryType[salaryTypeKey];
     employee.effectiveDate = new Date(moment(effectiveDate))
-      .utc()
+    //  .utc()
       .format();
 
     await this.employeeRepository.save(employee);

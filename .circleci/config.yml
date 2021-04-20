@@ -50,7 +50,7 @@ jobs:
             cd backend
             sudo npm install npm@latest -g
             sudo npm i --save-dev standard-version 
-            npm audit fix --force
+            sudo npm audit fix --force
             sudo npm run build
       - save_cache:
           paths: [backend/node_modules]
@@ -452,7 +452,7 @@ jobs:
           command: |
             cd backend
             sudo npm install jest
-            npm audit fix --force
+            sudo npm audit fix --force
             sudo npm run test        
       - save_cache:
           paths: [backend/node_modules]

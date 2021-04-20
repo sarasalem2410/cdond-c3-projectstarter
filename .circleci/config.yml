@@ -198,7 +198,7 @@ jobs:
           no_output_timeout: 30m
           command: |
             pwd            
-            tar -czvf backend.tar.gz .
+            tar -czvf backend.tar.gz backend
             cd .circleci/ansible
             export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i inventory.txt deploy-backend.yml

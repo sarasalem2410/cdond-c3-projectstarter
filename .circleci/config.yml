@@ -372,6 +372,7 @@ jobs:
             ls
             #npm install
             #npm audit --audit-level=critical
+            npm i --package-lock-only
             npm audit fix --audit-level=critical --force
       - save_cache:
           paths: [backend/node_modules]
@@ -390,6 +391,7 @@ jobs:
           name: Analyze frontend.
           command: |
             cd frontend
+            npm i --package-lock-only
             npm audit --audit-level=critical --force
       - save_cache:
           paths: [frontend/node_modules]

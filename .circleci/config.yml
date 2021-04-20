@@ -448,7 +448,8 @@ jobs:
           name: test-backend test
           command: |
             cd backend
-            npm audit fix
+            npm i --package-lock-only
+            npm audit fix --force
             npm run test
       - save_cache:
           paths: [backend/node_modules]
@@ -466,7 +467,8 @@ jobs:
           name: Run frontend test.
           command: |
             cd frontend
-            npm audit fix
+            npm i --package-lock-only
+            npm audit fix --force
             npm run test
       - save_cache:
           paths: [frontend/node_modules]

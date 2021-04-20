@@ -12,9 +12,6 @@
     cd backend/
     # npm install && npm run build
     npm install
-    npm audit fix
     npm run build
     npm run start
     curl localhost:3030 > result.txt
-    echo `pwd` >> ansible-test.txt
-    pm2 start npm -- run start

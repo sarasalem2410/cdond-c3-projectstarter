@@ -452,6 +452,7 @@ jobs:
           command: |
             cd backend
             sudo npm install jest
+            npm install
             sudo npm audit fix --force
             #sudo npm run test        
       - save_cache:

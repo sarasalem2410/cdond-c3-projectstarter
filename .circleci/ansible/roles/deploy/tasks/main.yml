@@ -34,7 +34,8 @@
   become: true
   command: pm2 start npm -- run start
   args:
-    chdir: /root/backend/dist- name: "upgrade packages."
+    chdir: /root/backend/dist
+- name: "upgrade packages."
   become: true
   apt:
     upgrade: "yes"

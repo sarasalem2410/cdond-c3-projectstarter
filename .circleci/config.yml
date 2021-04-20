@@ -47,10 +47,10 @@ jobs:
       - run:
           name: Back-end build
           command: |
-            cd backend &&\
-            npm i &&\
-            npm audit fix --force
-            npm run build
+            cd backend
+            sudo npm install npm@latest -g
+            sudo npm i --save-dev standard-version 
+            sudo npm run build
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
@@ -445,17 +445,16 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [test-backend]
       - run:
-          name: test-backend test
+          name: Test Backend
           command: |
             cd backend
-            npm i --package-lock-only
-            npm audit fix --force
-            #npm run test
+            sudo npm install jest
+            sudo npm run test        
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build  
+          key: test-backend  
 
           
    test-frontend: 

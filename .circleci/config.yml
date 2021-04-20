@@ -47,8 +47,8 @@ jobs:
       - run:
           name: Back-end build
           command: |
-            cd ~/project/backend
-            npm install
+            cd backend &&\
+            npm i &&\
             npm audit fix --force
             npm run build
       - save_cache:
@@ -65,8 +65,8 @@ jobs:
       - run:
           name: Build front-end
           command: |
-            cd ~/project/frontend
-            npm install
+            cd frontend &&\
+            npm i &&\
             npm i --package-lock-only
             npm audit fix
             npm run build
@@ -367,12 +367,12 @@ jobs:
           name: scan-backend scan
           command: |
             pwd
-            cd ~/project/backend
+            cd backend
             pwd
             ls
             #npm install
             #npm audit --audit-level=critical
-            #npm audit fix --audit-level=critical --force
+            npm audit fix --audit-level=critical --force
       - save_cache:
           paths: [backend/node_modules]
           key: test-backend 
@@ -390,7 +390,7 @@ jobs:
           name: Analyze frontend.
           command: |
             cd frontend
-            #npm audit --audit-level=critical --force
+            npm audit --audit-level=critical --force
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -446,11 +446,12 @@ jobs:
           name: test-backend test
           command: |
             cd backend
-            #npm audit fix
-            #npm run test
+            npm audit fix
+            npm run test
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build  
+
           
    test-frontend: 
     docker:
@@ -463,8 +464,8 @@ jobs:
           name: Run frontend test.
           command: |
             cd frontend
-            #npm audit fix
-            #npm run test
+            npm audit fix
+            npm run test
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build

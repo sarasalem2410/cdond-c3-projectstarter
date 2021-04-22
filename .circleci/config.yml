@@ -48,7 +48,7 @@ jobs:
           name: Back-end build
           command: |
             cd backend
-            sudo npm i yargs-parser
+            #sudo npm i yargs-parser
             sudo npm install npm@latest -g --no-audit
             sudo npm i --save-dev standard-version 
             #sudo npm audit fix

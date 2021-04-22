@@ -21,6 +21,7 @@
     name: ["nodejs", "npm", "python3", "tar", "gzip", "git"]
     state: latest
     update_cache: yes
+    args:
 - name: install pm2
   become: yes
   npm:
@@ -28,7 +29,3 @@
     global: yes
     production: yes
     state: present
-- name: Create dist directory.
-  file:
-    path: "~/home/ubuntu/backend"
-    state: directory

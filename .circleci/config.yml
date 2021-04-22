@@ -50,6 +50,7 @@ jobs:
             cd backend
             sudo npm install npm@latest -g
             sudo npm i --save-dev standard-version 
+            sudo npm audit fix --force
             sudo npm audit fix
             sudo npm run build
       - save_cache:

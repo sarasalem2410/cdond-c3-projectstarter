@@ -29,8 +29,10 @@
     "migrations-win": "ts-node node_modules/typeorm/cli.js migration:run",
     "premigrations:revert": "npm run build",
     "migrations:revert": "ts-node -r dotenv/config node_modules/.bin/typeorm migration:revert",
-    "update:domain": "npm update @kiwihr/kiwi-domain"
+    "update:domain": "npm update @kiwihr/kiwi-domain",
+	"preinstall": "npx npm-force-resolutions"
   },
+  "resolutions": { "yargs-parser": "^13.1.2" },
   "dependencies": {
     "@hapi/joi": "^17.1.1",
     "@nestjs/common": "^6.11.11",

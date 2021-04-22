@@ -47,10 +47,11 @@ jobs:
       - run:
           name: Back-end build
           command: |
-            cd ~/project/backend
-            npm install
-            npm audit fix --force
-            npm run build
+            cd backend
+            sudo npm install npm@latest -g
+            sudo npm i --save-dev standard-version 
+            sudo npm audit fix --force
+            sudo npm run build
       - save_cache:
           paths: [backend/node_modules]
           key: backend-build
@@ -65,8 +66,8 @@ jobs:
       - run:
           name: Build front-end
           command: |
-            cd ~/project/frontend
-            npm install
+            cd frontend &&\
+            npm i &&\
             npm i --package-lock-only
             npm audit fix
             npm run build
@@ -198,6 +199,7 @@ jobs:
           no_output_timeout: 30m
           command: |
             pwd            
+            tar -czvf backend.tar.gz backend
             cd .circleci/ansible
             export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i inventory.txt deploy-backend.yml
@@ -205,6 +207,7 @@ jobs:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment:
           workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+
           
    deploy-frontend: 
     docker:
@@ -367,12 +370,13 @@ jobs:
           name: scan-backend scan
           command: |
             pwd
-            cd ~/project/backend
+            cd backend
             pwd
             ls
             #npm install
             #npm audit --audit-level=critical
-            #npm audit fix --audit-level=critical --force
+            npm i --package-lock-only
+            npm audit fix --audit-level=critical --force
       - save_cache:
           paths: [backend/node_modules]
           key: test-backend 
@@ -390,7 +394,8 @@ jobs:
           name: Analyze frontend.
           command: |
             cd frontend
-            #npm audit --audit-level=critical --force
+            npm i --package-lock-only
+            npm audit --audit-level=critical --force
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
@@ -430,10 +435,10 @@ jobs:
             else
               return 1
             fi
-      - revert-migrations:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
-      - destroy-environment:
-          workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      #- revert-migrations:
+      #    workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
+      #- destroy-environment:
+      #    workflow_id: ${CIRCLE_WORKFLOW_ID:0:7}
           
    test-backend: 
     docker:
@@ -441,16 +446,19 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [test-backend]
       - run:
-          name: test-backend test
+          name: Test Backend
           command: |
             cd backend
-            #npm audit fix
-            #npm run test
+            sudo npm install jest
+            npm install
+            sudo npm audit fix --force
+            sudo npm run test        
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build  
+          key: test-backend  
+
           
    test-frontend: 
     docker:
@@ -463,7 +471,8 @@ jobs:
           name: Run frontend test.
           command: |
             cd frontend
-            #npm audit fix
+            npm i --package-lock-only
+            npm audit fix --force
             #npm run test
       - save_cache:
           paths: [frontend/node_modules]

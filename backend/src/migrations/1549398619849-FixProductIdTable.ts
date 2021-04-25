@@ -9,7 +9,6 @@ export class FixProductIdTable1549398619849 implements MigrationInterface {
       `ALTER TABLE "product" DROP CONSTRAINT "PK_bebc9158e480b949565b4dc7a82"`,
     );
     await queryRunner.query(`ALTER TABLE "product" DROP COLUMN "id"`);
-	await queryRunner.query(CREATE EXTENSION IF NOT EXISTS "uuid-ossp");
     await queryRunner.query(
       `ALTER TABLE "product" ADD "id" uuid NOT NULL DEFAULT uuid_generate_v4()`,
     );

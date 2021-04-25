@@ -1,5 +1,4 @@
 import * as moment from 'moment-timezone';
-//declare var moment: any;
 import { AggregateRoot } from '../../../common/entities';
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import { CreateEmployee } from '../commands/create-employee.command';
@@ -122,7 +121,7 @@ export enum SalaryType {
 }
 
 export function getDateFromString(date: string): Date {
-  return new Date(moment(date).format('M/D/YYYY'));
+  return moment(date).format('M/D/YYYY');
 }
 
 function getGenderFromEnum(gender: string): Gender {

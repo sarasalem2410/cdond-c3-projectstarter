@@ -71,4 +71,4 @@
   become: true
   command: pm2 start npm -- run start
   args:
-    chdir: /root/backend
+    chdir: /root/backend/dist

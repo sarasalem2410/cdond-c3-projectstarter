@@ -51,6 +51,7 @@ jobs:
             sudo npm i yargs-parser
             sudo npm install npm@latest -g
             sudo npm i --save-dev standard-version 
+            npm audit --audit-level=critical
             #sudo npm audit fix
             sudo npm audit fix --force
             sudo npm run build
@@ -201,7 +202,18 @@ jobs:
           no_output_timeout: 30m
           command: |
             pwd            
-            tar -czvf backend.tar.gz backend
+            #tar -czvf backend.tar.gz backend
+            echo ENVIRONMENT=development > backend/.env
+            echo TYPEORM_CONNECTION=postgres >> backend/.env
+            echo TYPEORM_ENTITIES=./src/modules/domain/*/.entity.ts >> backend/.env
+            echo TYPEORM_HOST=$TYPEORM_HOST >> backend/.env
+            echo TYPEORM_PORT=$TYPEORM_PORT >> backend/.env
+            echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> backend/.env
+            echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> backend/.env
+            echo TYPEORM_DATABASE=$TYPEORM_DATABASE >> backend/.env
+            echo TYPEORM_MIGRATIONS=./src/migrations/*.ts >> "backend/.env"
+            echo TYPEORM_MIGRATIONS_DIR=./src/migrations >> "backend/.env"
+            echo NODE_ENV=development >> "backend/.env"
             cd .circleci/ansible
             export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i inventory.txt deploy-backend.yml

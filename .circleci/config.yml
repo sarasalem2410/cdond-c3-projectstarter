@@ -15,15 +15,15 @@ commands:
     parameters:
       id:
         type: string
-        default: ${CIRCLE_WORKFLOW_ID}   
+        default: ${CIRCLE_WORKFLOW_ID:0:7}   
     steps:
       - run:
           name: Destroy environments
           when: on_fail
           command: |
-            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID}
-            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID} --force
-            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID}
+            aws cloudformation delete-stack --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}
+            aws s3 rb s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --force
+            aws cloudformation delete-stack --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}
             
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -33,7 +33,7 @@ commands:
           when: on_fail
           command: |
             SUCCESS=`curl -H "token: 99934756-ea04-49e9-8022-8e5912911962" \
-              --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}`
+              --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}`
             if(( $SUCCESS==1 )); 
             then
               cd ~/project/backend
@@ -157,9 +157,9 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/backend.yml \
               --tags project=udapeople-backend \
-              --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID} \
+              --stack-name udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7} \
               --region us-west-2 \
-              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}
   
       - run:
           name: Ensure front-end infrastructure exist
@@ -167,9 +167,9 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/frontend.yml \
               --tags project=udapeople-frontend \
-              --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID} \
+              --stack-name udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7} \
               --region us-west-2 \
-              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID}
+              --parameter-overrides ID=${CIRCLE_WORKFLOW_ID:0:7}
       - run:
           name: Add back-end ip to ansible inventory
           command: |
@@ -186,7 +186,7 @@ jobs:
             echo $BACKEND_INSTANCE_IP
             curl -H "Content-Type: text/plain" \
               -H "token: 2669c9d4-3f74-4218-86a9-9a88f26895b0" \
-              --request PUT --data "$BACKEND_INSTANCE_IP" https://api.memstash.io/values/BACKEND_INSTANCE_IP_${CIRCLE_WORKFLOW_ID} 
+              --request PUT --data "$BACKEND_INSTANCE_IP" https://api.memstash.io/values/BACKEND_INSTANCE_IP_${CIRCLE_WORKFLOW_ID:0:7} 
       
       - persist_to_workspace:
           root: ~/
@@ -259,7 +259,7 @@ jobs:
               -H "token: 99934756-ea04-49e9-8022-8e5912911962" \
               --request PUT \
               --data "${MIGRATION_NUM}" \
-              https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID}
+              https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID:0:7}
       - destroy-environment
       - revert-migrations
       #- slack-failure-notification
@@ -282,7 +282,7 @@ jobs:
           name: Get backend 
           command: |
             BACKEND_IP=`curl -H "token: 2669c9d4-3f74-4218-86a9-9a88f26895b0" \
-              --request GET https://api.memstash.io/values/BACKEND_INSTANCE_IP_${CIRCLE_WORKFLOW_ID}`
+              --request GET https://api.memstash.io/values/BACKEND_INSTANCE_IP_${CIRCLE_WORKFLOW_ID:0:7}`
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             cd frontend
@@ -291,7 +291,7 @@ jobs:
       - run:
           name: Deploy frontend objects
           command: |
-            aws s3 cp ./frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID}/ --recursive
+            aws s3 cp ./frontend/dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7}/ --recursive
       - destroy-environment
       - revert-migrations
       #- slack-failure-notification           
@@ -351,12 +351,12 @@ jobs:
           name: Get backend url && backend smoke test
           command: |
             BACKEND_IP=`curl -H "token: 2669c9d4-3f74-4218-86a9-9a88f26895b0" \
-              --request GET https://api.memstash.io/values/BACKEND_INSTANCE_IP_${CIRCLE_WORKFLOW_ID}`
+              --request GET https://api.memstash.io/values/BACKEND_INSTANCE_IP_${CIRCLE_WORKFLOW_ID:0:7}`
             curl "http://${BACKEND_IP}:3030/api/status" 
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://udapeople-${CIRCLE_WORKFLOW_ID}.s3-website-us-east-1.amazonaws.com"
+            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com"
             if curl -s ${URL} | grep "Welcome"
             then
               return 0

@@ -17,9 +17,14 @@
 - name: "copy backend file"
   become: true
   copy:
-    src: /root/project/backend
+    src: /root/project/backend.tar.gz
     dest: /root
     force: no
+- name: "install package dependencies"
+  become: true
+  shell: |
+    cd /root
+    tar -xzvf backend.tar.gz
 - name: "install npm packages"
   become: true
   command: npm install

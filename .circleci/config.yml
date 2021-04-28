@@ -356,7 +356,7 @@ jobs:
       - run:
           name: Frontend smoke test.
           command: |
-            URL="http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com"
+            URL=http://udapeople-${CIRCLE_WORKFLOW_ID:0:7}.s3-website-us-east-1.amazonaws.com
             if curl -s ${URL} | grep "Welcome"
             then
               return 0
@@ -383,7 +383,7 @@ jobs:
               --template-file .circleci/files/cloudfront.yml \
               --tags project=udapeople \
               --stack-name udapeople-cloudfront \
-              --parameter-overrides WorkflowID="k333ylerjh"
+              --parameter-overrides WorkflowID="kk1j287dhjppm2410"
 
       - destroy-environment
       - revert-migrations  
